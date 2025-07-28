@@ -22,7 +22,7 @@
         </div>
 
         <div class="flex justify-between gap-4">
-            <input type="text" placeholder="Search events..." class="mt-4 p-2 border-2 w-full focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300" />
+            <input v-model="searchName" type="text" placeholder="Search events..." class="mt-4 p-2 border-2 w-full focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300" />
             <select
                 v-model="selectedCategory"
                 class="mt-4 p-2 border-2 w-full focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300">
@@ -66,12 +66,20 @@ const props = defineProps({
 const { events, categories } = toRefs(props);
 
 const selectedCategory = ref('');
+const searchName = ref('');
 
 const filteredEvents = computed(() => {
-    if (!selectedCategory.value) {
-        return events.value.data;
-    }
-    return events.value.data.filter(event => event.category === selectedCategory.value);
+  return events.value.data
+    .filter(evt =>
+      // pasuje kategoria albo nic nie wybrano
+      (!selectedCategory.value || evt.category === selectedCategory.value)
+    )
+    .filter(evt =>
+      // pasuje nazwa albo nic nie wpisano
+      (!searchName.value ||
+        evt.name.toLowerCase().includes(searchName.value.toLowerCase())
+      )
+    )
 })
 
 
