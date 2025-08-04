@@ -9,9 +9,10 @@ class Event extends Model
     protected $fillable = [
         'name',
         'description',
+        'excerpt',
         'image',
         'start_datetime',
-        'end_datetime',
+        'duration',
         'location',
         'capacity',
         'is_active',
@@ -19,7 +20,7 @@ class Event extends Model
 
     protected $casts = [
         'start_datetime' => 'datetime',
-        'end_datetime' => 'datetime',
+        'duration' => 'integer',
         'is_active' => 'boolean',
     ];
 

@@ -2,9 +2,12 @@
 
 namespace App\Http\Resources;
 
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class EventResource extends JsonResource
 {
@@ -19,9 +22,10 @@ class EventResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => Storage::disk('public')->url($this->image),
+            'excerpt' => Str::limit($this->excerpt, 80),
             'description' => $this->description,
-            'start_datetime' => $this->start_datetime,
-            'end_datetime' => $this->end_datetime,
+            'start_datetime' => DateTime::createFromFormat('Y-m-d H:i:s', $this->start_datetime)->format('Y-m-d H:i:s'),
+            'duration' => $this->duration,
             'location' => $this->location,
             'capacity' => $this->capacity,
             'is_active' => $this->is_active,

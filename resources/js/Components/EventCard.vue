@@ -6,7 +6,7 @@
                 {{ item.category }}
             </span>
             <h3 class="text-sm font-bold tracking-widest text-black uppercase">{{ item.name }}</h3>
-            <p class="mt-1 text-gray-600">{{ item.description }}</p>
+            <p class="mt-1 text-gray-600">{{ item.excerpt }}</p>
         </div>
     </div>
 </template>

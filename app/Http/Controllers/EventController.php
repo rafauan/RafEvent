@@ -17,4 +17,11 @@ class EventController extends Controller
             'categories' => CategoryResource::collection(Category::all()),
         ]);
     }
+
+    public function show(Event $event)
+    {
+        return Inertia::render('Events/Show', [
+            'event' => new EventResource($event),
+        ]);
+    }
 }

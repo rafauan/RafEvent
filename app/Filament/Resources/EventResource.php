@@ -36,7 +36,12 @@ class EventResource extends Resource
                     ->maxSize(51200) // 50 MB
                     ->columnSpanFull()
                     ->required(),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\TextInput::make('excerpt')
+                    ->nullable()
+                    ->columnSpanFull()
+                    ->maxLength(500)
+                    ->helperText('A short summary of the event, displayed on the event listing page.'),
+                Forms\Components\RichEditor::make('description')
                     ->columnSpanFull(),
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
@@ -46,7 +51,12 @@ class EventResource extends Resource
                     ->label('Category'),
                 Forms\Components\DateTimePicker::make('start_datetime')
                     ->required(),
-                Forms\Components\DateTimePicker::make('end_datetime'),
+                Forms\Components\TextInput::make('duration')
+                    ->label('Duration (minutes)')
+                    ->required()
+                    ->numeric()
+                    ->default(0)
+                    ->helperText('Duration in minutes. This field replaces the end date and time.'),
                 Forms\Components\TextInput::make('location')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('capacity')
@@ -72,8 +82,9 @@ class EventResource extends Resource
                 Tables\Columns\TextColumn::make('start_datetime')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('end_datetime')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('duration')
+                    ->label('Duration (minutes)')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('location')
                     ->searchable(),
