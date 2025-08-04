@@ -25,7 +25,17 @@ class EventResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->columnSpanFull()
                     ->maxLength(255),
+                Forms\Components\FileUpload::make('image')
+                    ->label('Featured Image')
+                    ->disk('public')
+                    ->directory('uploads/events')
+                    ->image()
+                    ->preserveFilenames()
+                    ->maxSize(51200) // 50 MB
+                    ->columnSpanFull()
+                    ->required(),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
                 Forms\Components\Select::make('category_id')
@@ -54,6 +64,11 @@ class EventResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Featured Image')
+                    ->disk('public')
+                    ->height('50')
+                    ->size(50),
                 Tables\Columns\TextColumn::make('start_datetime')
                     ->dateTime()
                     ->sortable(),
