@@ -1,5 +1,8 @@
 <template>
-    <div class="group relative inline-block focus:outline-hidden cursor-pointer" @click="$emit('click')">
+    <button
+        class="group relative inline-block focus:outline-hidden cursor-pointer"
+        type="submit"
+    >
       <span
         class="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-green-300 transition-transform group-hover:translate-x-0 group-hover:translate-y-0"
       ></span>
@@ -9,7 +12,7 @@
       >
         {{ label }}
       </span>
-    </div>
+    </button>
 </template>
 
 <script setup>
@@ -22,5 +25,5 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['click']);
+// const emit = defineEmits(['click']);
 </script>

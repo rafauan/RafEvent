@@ -29,60 +29,110 @@
             <div class="mt-8 prose prose-lg max-w-none wysiwyg-content" v-html="event.data.description"></div>
         </div>
     </div>
-</MainLayout>
-<div>
-    <div class="container mx-auto max-w-7xl px-6 py-8">
-        <form class="space-y-4">
+
+    <!-- Registration Form -->
+    <div class="container mx-auto max-w-7xl py-8">
+        <form class="space-y-4" @submit.prevent="signUp">
+
+            <div v-if="successMessage" class="mb-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded">
+                {{ successMessage }}
+            </div>
+
+            <!-- Błędy ogólne (capacity, email already registered) -->
+            <div v-if="form.errors.capacity" class="mb-4 p-4 bg-red-100 border border-red-300 text-red-800 rounded">
+                {{ form.errors.capacity }}
+            </div>
+
             <h2 class="text-2xl font-bold tracking-widest text-black uppercase">Register for this event</h2>
 
             <div>
                 <input
+                    v-model="form.name"
                     type="text"
                     placeholder="Full name"
                     class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
                 />
+                <div v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ form.errors.name }}</div>
             </div>
             <div>
                 <input
+                    v-model="form.email"
                     type="email"
                     placeholder="E-mail"
                     class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
                 />
+                <div v-if="form.errors.email" class="text-red-500 text-sm mt-1">{{ form.errors.email }}</div>
             </div>
             <div>
                 <input
+                    v-model="form.phone"
                     type="tel"
                     placeholder="Phone number"
                     class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
                 />
+                <div v-if="form.errors.phone" class="text-red-500 text-sm mt-1">{{ form.errors.phone }}</div>
             </div>
 
             <div>
                 <label class="inline-flex items-center gap-3">
-                    <input type="checkbox" class="size-8 rounded" />
+                    <input v-model="form.agree" type="checkbox" class="size-8 rounded" />
                     <span class="font-medium text-gray-700"> I agree to the processing of my personal data (name, email, phone number) by RafEvent for the purpose of event registration, communication regarding the event, and providing event-related services. I understand that I can withdraw my consent at any time by contacting us at <a href="mailto:info@rafevent.com" class="text-blue-500">info@rafevent.com</a>.</span>
                 </label>
+                <div v-if="form.errors.agree" class="text-red-500 text-sm mt-1">{{ form.errors.agree }}</div>
             </div>
 
             <div>
-                <SubmitBtn label="Register" />
+                <SubmitBtn />
             </div>
         </form>
     </div>
-</div>
+</MainLayout>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+import { useForm, usePage } from '@inertiajs/vue3'
 import MainLayout from '@/Layouts/MainLayout.vue';
 import SubmitBtn from '@/Components/SubmitBtn.vue';
 import { Calendar, Clock, Users, MapPin } from 'lucide-vue-next';
+
+const page = usePage();
+const successMessage = computed(() => page.props.flash?.success || '');
+const errors = computed(() => page.props.flash?.errors || {});
 
 const props = defineProps({
   event: {
     type: Object,
     required: true
-  }
+  },
+  flash: {}
 });
+
+// Form
+const form = useForm({
+    event_id: props.event.data.id,
+    name: '',
+    email: '',
+    phone: '',
+    agree: false
+})
+
+const signUp = () => {
+    form.post('/events/register', {
+        onSuccess: () => {
+            console.log('Page props:', page.props);
+            console.log('Flash:', page.props.flash.success);
+            console.log('Success message:', successMessage.value);
+            console.log('Form errors:', form.errors);
+
+            form.reset();
+        },
+        onError: (errors) => {
+            console.error(errors);
+            console.log('Form errors:', form.errors);
+        }
+    });
+}
 </script>
 
 <style>

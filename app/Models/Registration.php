@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Registration extends Model
 {
     protected $fillable = [
-        'user_id',
         'event_id',
+        'name',
+        'email',
+        'phone',
+        'agree',
         'status',
         'registered_at',
         'confirmation_token',
@@ -17,6 +20,8 @@ class Registration extends Model
     protected $casts = [
         'registered_at' => 'datetime',
         'status' => 'string',
+        'agree' => 'boolean',
+        'confirmation_token' => 'string',
     ];
 
     public function user()

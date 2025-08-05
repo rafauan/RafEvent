@@ -23,11 +23,17 @@ class RegistrationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->preload()
+                Forms\Components\TextInput::make('name')
                     ->required()
-                    ->searchable(),
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('phone')
+                    ->tel()
+                    ->required()
+                    ->maxLength(20),
                 Forms\Components\Select::make('event_id')
                     ->relationship('event', 'name')
                     ->preload()
@@ -42,6 +48,9 @@ class RegistrationResource extends Resource
                     ->required(),
                 Forms\Components\DateTimePicker::make('registered_at')
                     ->required(),
+                Forms\Components\Checkbox::make('agree')
+                    ->label('Agree to terms and conditions')
+                    ->required(),
             ]);
     }
 
@@ -49,10 +58,15 @@ class RegistrationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->label('User')
+                Tables\Columns\TextColumn::make('name')
                     ->sortable()
-                    ->sortable(),
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('event.name')
                     ->label('Event')
                     ->sortable()
