@@ -51,6 +51,8 @@ class RegistrationResource extends Resource
                 Forms\Components\Checkbox::make('agree')
                     ->label('Agree to terms and conditions')
                     ->required(),
+                Forms\Components\TextInput::make('confirmation_token')
+                    ->disabled(),
             ]);
     }
 

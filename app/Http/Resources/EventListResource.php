@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class EventResource extends JsonResource
+class EventListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,7 +23,6 @@ class EventResource extends JsonResource
             'name' => $this->name,
             'image' => Storage::disk('public')->url($this->image),
             'excerpt' => Str::limit($this->excerpt, 80),
-            'description' => $this->description,
             // 'start_datetime' => DateTime::createFromFormat('Y-m-d H:i:s', $this->start_datetime)->format('Y-m-d H:i:s'),
             'start_datetime' => $this->start_datetime,
             'duration' => $this->duration,
