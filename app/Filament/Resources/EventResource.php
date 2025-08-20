@@ -39,7 +39,7 @@ class EventResource extends Resource
                 Forms\Components\TextInput::make('excerpt')
                     ->nullable()
                     ->columnSpanFull()
-                    ->maxLength(500)
+                    ->maxLength(255)
                     ->helperText('A short summary of the event, displayed on the event listing page.'),
                 Forms\Components\RichEditor::make('description')
                     ->columnSpanFull(),
