@@ -13,3 +13,4 @@ use App\Http\Controllers\CategoryController;
 Route::apiResource('events', EventController::class)->only(['index', 'show']);
 Route::post('events/register', [RegistrationController::class, 'register']);
 Route::apiResource('categories', CategoryController::class)->only('index');
+Route::post('events/confirm', [RegistrationController::class, 'confirm']);

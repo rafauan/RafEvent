@@ -7,7 +7,9 @@ We're excited to share that your registration for **{{ $event->name }}** was suc
 
 ## 📖 {{ $event->excerpt }}
 
-<x-mail::button :url="url('/register-confirmation')">
+{{ config('app.frontend_url') . '/events/' . $registration->confirmation_token }}
+
+<x-mail::button :url="config('app.frontend_url') . '/confirm/' . $registration->confirmation_token">
 Confirm Your Registration
 </x-mail::button>
 

@@ -26,6 +26,6 @@ class RegistrationObserver
         }
 
         // Notify the user about successful registration
-        Mail::to($email)->queue(new RegistrationSuccessMail($event));
+        Mail::to($email)->queue(new RegistrationSuccessMail($event, $registration));
     }
 }

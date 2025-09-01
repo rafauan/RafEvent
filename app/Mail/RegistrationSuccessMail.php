@@ -9,18 +9,21 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Event;
+use App\Models\Registration;
 
 class RegistrationSuccessMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
     public Event $event;
+    public Registration $registration;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Event $event)
+    public function __construct(Event $event, Registration $registration)
     {
         $this->event = $event;
+        $this->registration = $registration;
     }
 
     /**
@@ -42,6 +45,7 @@ class RegistrationSuccessMail extends Mailable implements ShouldQueue
             markdown: 'emails.registration.success',
             with: [
                 'event' => $this->event,
+                'registration' => $this->registration,
             ],
         );
     }

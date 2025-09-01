@@ -48,8 +48,32 @@ class RegistrationController extends Controller
 
     public function confirm(Request $request)
     {
-        // This method can be used to handle confirmation logic if needed.
-        // For now, it simply returns a confirmation view.
-        return view('registration.confirmation');
+        $data = $request->validate([
+            'token' => 'required|string',
+        ]);
+
+        $registration = Registration::where('confirmation_token', $data['token'])->first();
+
+        if (!$registration) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid or expired confirmation token.',
+            ], 404);
+        }
+
+        if ($registration->status === 'confirmed') {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This registration has already been confirmed.',
+            ], 409);
+        }
+
+        // Mark the registration as confirmed
+        $registration->update(['status' => 'confirmed']);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Registration confirmed successfully.',
+        ]);
     }
 }
